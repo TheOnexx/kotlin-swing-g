@@ -8,9 +8,11 @@ import java.awt.Graphics2D
  */
 class Box(private val position: Position) : Shape {
 
+
     private val width: Int = 10
     private val height: Int = 10
-    private var direction = Direction.RIGHT
+    private var direction = Direction.NONE
+    private val touchArea = TouchArea(position, width, height)
     override fun move() {
         position.x += direction.dx
         position.y += direction.dy
@@ -27,4 +29,19 @@ class Box(private val position: Position) : Shape {
     }
 
     override fun getDirection() = direction
+
+    override fun getTouchArea() = touchArea
+
+    override fun getPosition(): Position {
+        return position
+    }
+
+    override fun getWidth(): Int {
+        return width
+    }
+
+    override fun getHeight(): Int {
+        return height
+    }
+
 }

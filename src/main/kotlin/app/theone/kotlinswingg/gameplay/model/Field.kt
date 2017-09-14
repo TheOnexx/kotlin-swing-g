@@ -3,15 +3,26 @@ package app.theone.kotlinswingg.gameplay.model
 import app.theone.kotlinswingg.ui.model.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
+import java.util.concurrent.ThreadLocalRandom
 
 
 class Field : KeyListener {
 
 
-    private var worldObjects: List<Shape> = listOf(Box(Position(10, 20)))
+    private var worldObjects: List<Snake> = listOf(Snake(Box(Position(10, 20))))
+    private var food: MutableList<Shape> = ArrayList()
+    private var tick: Int = 0
 
-    fun getWorldObjects() = worldObjects
+    fun getWorldObjects() = worldObjects.zip(food)
 
+    init {
+        val randX = ThreadLocalRandom.current().nextInt(Constants.FIELD_WIDTH)
+        val randY = ThreadLocalRandom.current().nextInt(Constants.FIELD_HEIGHT)
+
+        food.add(Apple(Position(randX, randY)))
+        worldObjects.forEach { it.changeDirection(Direction.RIGHT) }
+
+    }
 
     override fun keyTyped(e: KeyEvent?) {
 
@@ -26,10 +37,15 @@ class Field : KeyListener {
         }
     }
 
+
+
     private fun routeDirection(movement: Movement) {
+
         worldObjects.forEach {
+
             if(it.getDirection() != movement) {
                 it.changeDirection(movement)
+                tick = 1
             }
         }
     }
@@ -40,6 +56,25 @@ class Field : KeyListener {
     }
 
     fun updateWorld() {
-        worldObjects.forEach { it.move() }
+        worldObjects.forEach { obj ->
+            food.forEach {
+                if(obj.isTouched(it.getTouchArea())) {
+                    obj.addBody()
+                }
+            }
+            if(tick != 0 && tick < obj.getSnakeSize()) {
+                obj.changeDirectionTo(tick)
+                tick++
+            } else {
+                tick = 0
+            }
+            obj.move()
+        }
     }
+
+    fun isGameEnd(): Boolean {
+        return false
+    }
+
+
 }

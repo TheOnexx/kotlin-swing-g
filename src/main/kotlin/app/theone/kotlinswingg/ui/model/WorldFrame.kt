@@ -10,7 +10,7 @@ import javax.swing.JPanel
  * Created by (TheOne) on 13-Sep-17.
  */
 class WorldFrame : JPanel(true) {
-    private val fps: Long = 50
+    private val fps: Long = 1000
 
 
     private lateinit var field: Field
@@ -32,6 +32,9 @@ class WorldFrame : JPanel(true) {
     }
 
     private fun updateWorld() {
+        if(field.isGameEnd()) {
+            error("Game Over")
+        }
         field.updateWorld()
         repaint()
     }
@@ -46,7 +49,10 @@ class WorldFrame : JPanel(true) {
         super.paintComponent(g)
         if(g != null) {
             g as Graphics2D
-            field.getWorldObjects().forEach { it.draw(g) }
+            field.getWorldObjects().forEach {
+                it.first.draw(g)
+                it.second.draw(g)
+            }
         }
 
     }

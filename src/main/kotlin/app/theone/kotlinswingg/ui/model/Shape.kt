@@ -10,4 +10,8 @@ interface Shape {
     fun draw(graphic: Graphics2D)
     fun changeDirection(movement: Movement)
     fun getDirection() : Movement
+    fun getTouchArea() : TouchArea
+    fun getPosition() : Position
+    fun getWidth() : Int
+    fun getHeight() : Int
 }
