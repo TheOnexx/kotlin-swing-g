@@ -1,5 +1,6 @@
 package app.theone.kotlinswingg.ui.model
 
+import app.theone.kotlinswingg.gameplay.model.Field
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.util.*
@@ -31,6 +32,7 @@ class WorldFrame : JPanel(true) {
     }
 
     private fun updateWorld() {
+        field.updateWorld()
         repaint()
     }
 
