@@ -1,5 +1,6 @@
 package app.theone.kotlinswingg
 
+import app.theone.kotlinswingg.ui.model.Field
 import java.awt.Color
 import java.awt.Dimension
 import javax.swing.BoxLayout
@@ -24,12 +25,14 @@ class ApplicationFrame(title: String?) : JFrame(title) {
 
         preferredSize = Dimension(WIDTH, HEIGHT)
 
-
-
+        var field = Field()
+        rootPanel.add(field)
         contentPane = rootPanel
         pack()
         setLocationRelativeTo(null)
         isResizable = false
         isVisible = true
+
+        field.run()
     }
 }
