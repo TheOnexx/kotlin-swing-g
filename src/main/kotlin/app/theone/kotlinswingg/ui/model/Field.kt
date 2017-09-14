@@ -1,41 +1,49 @@
 package app.theone.kotlinswingg.ui.model
 
-import java.awt.Graphics
-import java.awt.Graphics2D
-import javax.swing.JPanel
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 
 /**
- * Created by (TheOne) on 13-Sep-17.
+ * Created by sech0614 on 9/14/2017.
  */
-class Field : JPanel(true) {
-    val fps = 50
-    var isRunning = false
-    var beginTime: Long = 0
-    val fameSkips = 10
-    var skipTicks = 1000/fps
-    var gameObjects: List<Shape> = listOf(Box(Position(10,20)))
+class Field : KeyListener {
 
-    fun run() {
-        beginTime = System.currentTimeMillis()
-        isRunning = true
-        var nextGameTick = System.currentTimeMillis()
-        while(isRunning) {
-            var timeDiff = System.currentTimeMillis() - beginTime
-            var loopCount = 0
-            while (timeDiff > nextGameTick && loopCount < fameSkips) {
-                nextGameTick+= skipTicks
-                loopCount++
-            }
-            repaint()
+
+    private var worldObjects: List<Shape> = listOf(Box(Position(10,20)))
+
+    fun getWorldObjects() = worldObjects
+    
+
+    override fun keyTyped(e: KeyEvent?) {
+
+    }
+
+    override fun keyPressed(e: KeyEvent) {
+        when(e.keyCode) {
+            KeyEvent.VK_UP -> moveUp()
+            KeyEvent.VK_RIGHT -> moveRight()
+            KeyEvent.VK_LEFT -> moveLeft()
+            KeyEvent.VK_DOWN -> moveDown()
         }
     }
 
-    override fun paintComponent(g: Graphics?) {
-        super.paintComponent(g)
-        if(g != null) {
-            g as Graphics2D
-            gameObjects.forEach { it.draw(g) }
-        }
+    private fun moveDown() {
+        worldObjects.forEach { it.move(Movement(0, 1)) }
+    }
+
+    private fun moveLeft() {
+        worldObjects.forEach { it.move(Movement(-1, 0)) }
+    }
+
+    private fun moveRight() {
+        worldObjects.forEach { it.move(Movement(1, 0)) }
+    }
+
+    private fun moveUp() {
+        worldObjects.forEach { it.move(Movement(0, -1)) }
+    }
+
+    override fun keyReleased(e: KeyEvent?) {
 
     }
 }

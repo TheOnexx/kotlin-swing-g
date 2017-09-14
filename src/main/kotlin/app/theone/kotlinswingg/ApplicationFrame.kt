@@ -1,6 +1,6 @@
 package app.theone.kotlinswingg
 
-import app.theone.kotlinswingg.ui.model.Field
+import app.theone.kotlinswingg.ui.model.WorldFrame
 import java.awt.Color
 import java.awt.Dimension
 import javax.swing.BoxLayout
@@ -25,7 +25,7 @@ class ApplicationFrame(title: String?) : JFrame(title) {
 
         preferredSize = Dimension(WIDTH, HEIGHT)
 
-        var field = Field()
+        var field = WorldFrame()
         rootPanel.add(field)
         contentPane = rootPanel
         pack()

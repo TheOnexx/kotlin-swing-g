@@ -1,5 +1,7 @@
 package app.theone.kotlinswingg
 
+import java.awt.EventQueue
+
 /**
  * Created by (TheOne) on 12-Sep-17.
  */
@@ -9,7 +11,9 @@ class Main {
         @JvmStatic
         fun main(arg: Array<String>) {
             println("hello")
-            ApplicationFrame("Game").start()
+            EventQueue.invokeLater {
+                ApplicationFrame("Game").start()
+            }
         }
     }
 }
