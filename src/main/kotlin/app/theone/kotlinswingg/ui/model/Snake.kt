@@ -1,27 +1,26 @@
 package app.theone.kotlinswingg.ui.model
 
-import sun.security.provider.SHA
 import java.awt.Graphics2D
 
 
 class Snake(box: Box) : Shape {
 
-    private var body = mutableListOf<Shape>(box)
+    private var tail = mutableListOf<Shape>(box)
 
     override fun move() {
-        body.forEach { it.move() }
+        tail.forEach { it.move() }
     }
 
     override fun draw(graphic: Graphics2D) {
-        body.forEach { it.draw(graphic) }
+        tail.forEach { it.draw(graphic) }
     }
 
     override fun changeDirection(movement: Movement) {
-        body.first().changeDirection(movement)
+        tail.first().changeDirection(movement)
     }
 
     override fun getDirection(): Movement {
-       return body.first().getDirection()
+       return tail.first().getDirection()
     }
 
     override fun getTouchArea(): TouchArea {
@@ -29,7 +28,7 @@ class Snake(box: Box) : Shape {
     }
 
     fun isTouched(touchArea: TouchArea) : Boolean {
-        body.forEach {
+        tail.forEach {
             if(it.getTouchArea().isTouched(touchArea)) {
                 return true
             }
@@ -38,31 +37,34 @@ class Snake(box: Box) : Shape {
     }
 
     fun addBody() {
-        val last = body.last()
+        val last = tail.last()
         val position = last.getPosition()
         val direction = last.getDirection()
-        //val box = Box(position.copy())
         when(direction) {
-            Direction.DOWN -> body.add(Box(Position(position.x, position.y - last.getHeight())))
-            Direction.UP -> body.add(Box(Position(position.x, position.y + last.getHeight())))
-            Direction.LEFT -> body.add(Box(Position(position.x - last.getWidth(), position.y)))
-            Direction.RIGHT -> body.add(Box(Position(position.x + last.getWidth(), position.y)))
+            Direction.DOWN -> tail.add(Box(Position(position.x, position.y - last.getHeight())))
+            Direction.UP -> tail.add(Box(Position(position.x, position.y + last.getHeight())))
+            Direction.LEFT -> tail.add(Box(Position(position.x + last.getWidth(), position.y)))
+            Direction.RIGHT -> tail.add(Box(Position(position.x - last.getWidth(), position.y)))
         }
-        //body.last().changeDirection(direction.copy())
-     //   body.add(box)
+        tail.last().changeDirection(direction.copy())
 
     }
 
-    override fun getPosition() = body.first().getPosition()
+    override fun getPosition() = tail.first().getPosition()
 
-    override fun getWidth() = body.first().getWidth()
+    override fun getWidth() = tail.first().getWidth()
 
 
-    override fun getHeight() = body.first().getHeight()
+    override fun getHeight() = tail.first().getHeight()
 
     fun changeDirectionTo(number: Int) {
-        body[number].changeDirection(body.first().getDirection())
+        tail[number].changeDirection(tail[number - 1].getDirection().copy())
     }
 
-    fun getSnakeSize() = body.size
+    fun getSnakeSize() = tail.size
+
+    fun getTail() = tail
+    fun isTouchedTail(box: Shape): Boolean {
+        return tail.first().getTouchArea().isTouched(box.getTouchArea())
+    }
 }
