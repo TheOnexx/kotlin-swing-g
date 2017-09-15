@@ -56,11 +56,16 @@ class Field : KeyListener {
     }
 
     fun updateWorld() {
+        var isEaten = false
         worldObjects.forEach { obj ->
             food.forEach {
                 if(obj.isTouched(it.getTouchArea())) {
                     obj.addBody()
+                    isEaten = true
                 }
+            }
+            if(isEaten) {
+                refreshFood()
             }
             if(tick != 0 && tick < obj.getSnakeSize()) {
                 obj.changeDirectionTo(tick)
@@ -70,6 +75,16 @@ class Field : KeyListener {
             }
             obj.move()
         }
+    }
+
+    private fun refreshFood() {
+        val randX = ThreadLocalRandom.current().nextInt(Constants.FIELD_WIDTH)
+        val randY = ThreadLocalRandom.current().nextInt(Constants.FIELD_HEIGHT)
+
+        food.removeAt(0)
+        food.add(Apple(Position(randX, randY)))
+
+
     }
 
     fun isGameEnd(): Boolean {

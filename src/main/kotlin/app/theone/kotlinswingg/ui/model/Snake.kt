@@ -40,8 +40,16 @@ class Snake(box: Box) : Shape {
     fun addBody() {
         val last = body.last()
         val position = last.getPosition()
-        val box = Box(position.copy())
-        body.add(box)
+        val direction = last.getDirection()
+        //val box = Box(position.copy())
+        when(direction) {
+            Direction.DOWN -> body.add(Box(Position(position.x, position.y - last.getHeight())))
+            Direction.UP -> body.add(Box(Position(position.x, position.y + last.getHeight())))
+            Direction.LEFT -> body.add(Box(Position(position.x - last.getWidth(), position.y)))
+            Direction.RIGHT -> body.add(Box(Position(position.x + last.getWidth(), position.y)))
+        }
+        //body.last().changeDirection(direction.copy())
+     //   body.add(box)
 
     }
 

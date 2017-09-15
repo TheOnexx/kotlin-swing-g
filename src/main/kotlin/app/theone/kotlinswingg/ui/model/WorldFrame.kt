@@ -10,7 +10,7 @@ import javax.swing.JPanel
  * Created by (TheOne) on 13-Sep-17.
  */
 class WorldFrame : JPanel(true) {
-    private val fps: Long = 1000
+    private val fps: Long = 50
 
 
     private lateinit var field: Field
